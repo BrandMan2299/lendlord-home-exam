@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
+require('dotenv').config()
+
+
 mongoose?.connection?.on('connected', () => {
   log.info('Mongoose connected')
 })
@@ -15,6 +18,7 @@ mongoose?.connection?.on('error', err => {
 })
 
 module.exports.init = async () => {
+  console.log(process.env.MONGO_CONN_STRING);
   const connString = process.env.MONGO_CONN_STRING ? process.env.MONGO_CONN_STRING : config.database
   await mongoose.connect(connString)
 

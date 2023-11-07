@@ -1,8 +1,12 @@
 import logo from './assets/lendlord.png'
 import './App.css';
 
-function App() {
-
+async function App() {
+  async function bob() {
+    const response = await fetch("http://localhost:3000/hello");
+    console.log(response);
+  }
+  await bob();
   return (
     <div className="App">
       <header className="App-header">

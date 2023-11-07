@@ -8,6 +8,10 @@ const schema = new mongoose.Schema(
   {
     _id: { type: SchemaTypes.ObjectId, auto: true },
     firstName: { type: String, required: true, trim: true }
+    // lastName:
+    //   email
+    // dateStarted
+    // salary
   },
   { strict: false, autoCreate: true, timestamps: true }
 )
