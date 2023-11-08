@@ -6,14 +6,14 @@ const SchemaTypes = mongoose.Schema
 
 const schema = new mongoose.Schema(
   {
-    _id: { type: SchemaTypes.ObjectId, auto: true },
-    firstName: { type: String, required: true, trim: true }
-    // lastName:
-    //   email
-    // dateStarted
-    // salary
+    _id: { type: String, auto: true },
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    dateStarted: { type: Date, required: true },
+    salary: { type: String, required: true },
   },
-  { strict: false, autoCreate: true, timestamps: true }
+  { strict: false, autoCreate: true, timestamps: true, versionKey: false }
 )
 
 const model = mongoose.model(schemaName, schema, collectionName)
