@@ -3,7 +3,7 @@ const router = new Router()
 
 const User = require('../models/users');
 
-router.post('/newUser', async (ctx) => {
+router.post('/create', async (ctx) => {
     const user = new User(ctx.request.body);
     await user.save();
     const firstName = (await User.findOne({ createdAt: user.createdAt })).firstName;
@@ -16,14 +16,22 @@ router.get('/getAllUsers', async (ctx) => {
 })
 
 router.get('/getUserById/:id', async (ctx) => {
-    console.log(typeof (ctx.params.id));
     const user = await User.findById(ctx.params.id);
     ctx.body = user;
 })
 
-router.post('/update/:searchParam', async (ctx) => {
+router.post('/update', async (ctx) => {
     const data = ctx.request.body;
+    const query = ctx.query;
+    await User.findOneAndUpdate(query, data);
+    const user = await User.findOne(data);
+    ctx.body = user;
+})
 
+router.delete('/delete', async (ctx) => {
+    const query = ctx.query;
+    const user = await User.findOneAndDelete(query);
+    ctx.body = user;
 })
 
 router.allowedMethods()
