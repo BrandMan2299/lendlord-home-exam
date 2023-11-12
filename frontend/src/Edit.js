@@ -13,10 +13,13 @@ export default function Edit(props) {
         salary: props.user.salary,
         manager: props.user.manager,
         role: props.user.role,
-        _id: props.user._id
+        _id: props.user._id,
     });
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        props.setRender(props.render + 1);
+    }
     const handleShow = () => setShow(true);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +45,6 @@ export default function Edit(props) {
                 role: data.role,
                 salary: data.salary,
                 _id: data._id
-
             };
             console.log(user);
             const updated = await Network.post(`/update?_id=${user._id}`, user);

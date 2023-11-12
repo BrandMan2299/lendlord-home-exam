@@ -20,6 +20,7 @@ const formatDate = (stringDate) => {
 }
 
 function App() {
+  const [render, setRender] = useState(1);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState();
 
@@ -35,14 +36,14 @@ function App() {
         console.log(error);
       }
     })();
-  }, [])
+  }, [render])
   return (
     users ?
       <div className="App">
         <header className="App-header">
           <img src={logo} width={'200px'} alt={'logo'} />
         </header>
-        <PopUp />
+        <PopUp render={render} setRender={setRender} />
         <div>
           <Table striped bordered hover>
             <thead>
@@ -54,6 +55,8 @@ function App() {
                 <td> Salary </td>
                 <td> Manager </td>
                 <td> Role </td>
+                <td> Created at </td>
+                <td> Updated last at </td>
                 <td> Actions </td>
               </tr>
             </thead>
@@ -62,9 +65,9 @@ function App() {
                 <tr key={user._id}>
                   {
                     Object.keys(user).map(key => (
-                      (key == "dateStarted") ? (
+                      (key === "dateStarted") ? (
                         <td key={user._id + key} className="body-data">
-                          {formatDate(user.dateStarted)}
+                          {formatDate(user[key])}
                         </td>)
                         : (key != "_id") ? (
                           <td key={user._id + key} className="body-data">
@@ -74,7 +77,7 @@ function App() {
                     ))
                   }
                   <td>
-                    <Edit user={user}>Edit</Edit>
+                    <Edit user={user} render={render} setRender={setRender}>Edit</Edit>
                     <Delete _id={user._id}>Delete</Delete>
                   </td>
                 </tr>

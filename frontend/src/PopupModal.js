@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal, Form, Alert } from 'react-bootstrap';
 import Network from "./Network";
 
-function PopUp() {
+function PopUp(props) {
     const [show, setShow] = useState(false);
     const [alert, setAlert] = useState(null);
     const [data, setData] = useState({
@@ -47,10 +47,10 @@ function PopUp() {
             const messege = await Network.post('/create', user);
             handleClose();
             setAlert(messege);
+            props.setRender(props.render - 1);
         } catch (error) {
             window.alert("You are missing some stuff. try again...");
         }
-
     }
 
     return (
