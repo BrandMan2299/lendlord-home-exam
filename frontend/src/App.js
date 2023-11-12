@@ -2,26 +2,38 @@ import logo from './assets/lendlord.png'
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Network from "./Network";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Table, Button } from 'react-bootstrap';
+import PopUp from './PopupModal';
+
+
+const formatDate = (stringDate) => {
+  const date = new Date(stringDate);
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1;
+  const year = date.getUTCFullYear();
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+  return formattedDate;
+}
 
 function App() {
-  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState();
 
-  const bob = async () => {
-    try {
-      const res = await Network.get('/getAllUsers');
-      setUsers(res)
-      console.log(res);
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
   useEffect(() => {
     setLoading(true);
-    bob()
-    setLoading(false);
-    console.log(users)
+    (async () => {
+      try {
+        const res = await Network.get('/getAllUsers');
+        setUsers(res)
+        setLoading(false);
+      }
+      catch (error) {
+        console.log(error);
+      }
+    })();
   }, [])
   return (
     users ?
@@ -29,15 +41,50 @@ function App() {
         <header className="App-header">
           <img src={logo} width={'200px'} alt={'logo'} />
         </header>
-        {users.map((user) => (
-          <div>
-            {user.firstName}
-          </div>
-        ))
-        }
+        <PopUp />
+        <div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <td> First Name</td>
+                <td> Last Name</td>
+                <td> Email</td>
+                <td> Date started</td>
+                <td> Salary </td>
+                <td> Manager </td>
+                <td> Role </td>
+                <td> Actions </td>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  {
+                    Object.keys(user).map(key => (
+                      (key == "dateStarted") ? (
+                        <td key={user._id + key} className="body-data">
+                          {formatDate(user.dateStarted)}
+                        </td>)
+                        : (key != "_id") ? (
+                          <td key={user._id + key} className="body-data">
+                            {user[key]}
+                          </td>)
+                          : null
+                    ))
+                  }
+                  <td>
+                    <Button variant="primary" value={user._id}>Edit</Button>
+                    <Button variant="danger" value={user._id}>Delete</Button>
+                  </td>
+                </tr>
+              ))
+              }
+            </tbody>
+          </Table>
+        </div>
       </div>
       : !loading ?
-        <div></div>
+        <div>loading</div>
         :
         <div>not found</div>
   );

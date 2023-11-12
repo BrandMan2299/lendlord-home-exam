@@ -7,11 +7,11 @@ router.post('/create', async (ctx) => {
     const user = new User(ctx.request.body);
     if (user.role != 'Manager') {
         try {
-            const manager = await User.findById(user.manager);
+            await User.findById(user.manager);
             await user.save();
+            ctx.body = `hello ${user.firstName} ${user.lastName}, welcome aboard!`;
         } catch (error) {
-            ctx.status(422);
-            ctx.body = "wrong manager Id..."
+            ctx.error = "wrong manager Id..."
         }
     } else {
         await user.save();
@@ -21,7 +21,16 @@ router.post('/create', async (ctx) => {
 
 router.get('/getAllUsers', async (ctx) => {
     const users = await User.find({});
-    ctx.body = users;
+    const managers = await User.find({ role: 'Manager' })
+    const namedManagers = users.map(user => {
+        managers.forEach(manager => {
+            if (user.manager == manager._id) {
+                user.manager = manager.firstName + ' ' + manager.lastName;
+            }
+        })
+        return user;
+    });
+    ctx.body = namedManagers;
 })
 
 router.get('/getUserById/:id', async (ctx) => {
@@ -48,7 +57,7 @@ router.delete('/delete', async (ctx) => {
 router.get('/getManagerAndEmployees/:id', async (ctx) => {
     const manager = await User.findById(ctx.params.id);
     const employees = await User.find({ manager: ctx.params.id });
-    ctx.body = { manager, length: employees.length, employees };
+    ctx.body = { manager, employees };
 })
 
 router.allowedMethods()
