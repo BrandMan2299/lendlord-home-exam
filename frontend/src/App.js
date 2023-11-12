@@ -5,7 +5,8 @@ import Network from "./Network";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Button } from 'react-bootstrap';
 import PopUp from './PopupModal';
-
+import Edit from './Edit';
+import Delete from './Delete';
 
 const formatDate = (stringDate) => {
   const date = new Date(stringDate);
@@ -73,8 +74,8 @@ function App() {
                     ))
                   }
                   <td>
-                    <Button variant="primary" value={user._id}>Edit</Button>
-                    <Button variant="danger" value={user._id}>Delete</Button>
+                    <Edit user={user}>Edit</Edit>
+                    <Delete _id={user._id}>Delete</Delete>
                   </td>
                 </tr>
               ))

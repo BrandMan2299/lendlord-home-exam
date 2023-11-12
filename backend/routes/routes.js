@@ -50,6 +50,7 @@ router.post('/update', async (ctx) => {
 
 router.delete('/delete', async (ctx) => {
     const query = ctx.query;
+    console.log(query);
     const user = await User.findOneAndDelete(query);
     ctx.body = user;
 })
