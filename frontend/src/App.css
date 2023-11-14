@@ -11,3 +11,10 @@
  td{
   text-align:center;
  }
+ .front-row:hover {
+  background-color: #a7a7a7;
+  cursor: pointer;
+}
+.front-row{
+  font-weight: bold;
+}

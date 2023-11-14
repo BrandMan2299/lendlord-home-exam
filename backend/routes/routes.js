@@ -20,7 +20,13 @@ router.post('/create', async (ctx) => {
 });
 
 router.get('/getAllUsers', async (ctx) => {
-    const users = await User.find({});
+    const sortKey = ctx.query.key;
+    const sortObj = {};
+    const searchKey = ctx.query.searchKey;
+    const searchObj = {};
+    sortObj[sortKey] = ctx.query.direction;
+    searchObj[searchKey] = new RegExp(ctx.query.searchValue, "gi");
+    const users = await User.find(searchObj).sort(sortObj);
     const managers = await User.find({ role: 'Manager' })
     const namedManagers = users.map(user => {
         managers.forEach(manager => {

@@ -9,7 +9,7 @@ export default function Edit(props) {
         firstName: props.user.firstName,
         lastName: props.user.lastName,
         email: props.user.email,
-        dateStarted: props.user.dateStarted,
+        dateStarted: props.formatDate(props.user.dateStarted),
         salary: props.user.salary,
         manager: props.user.manager,
         role: props.user.role,
@@ -47,7 +47,7 @@ export default function Edit(props) {
                 _id: data._id
             };
             console.log(user);
-            const updated = await Network.post(`/update?_id=${user._id}`, user);
+            await Network.post(`/update?_id=${user._id}`, user);
             window.alert("updated");
             handleClose();
         } catch (error) {
