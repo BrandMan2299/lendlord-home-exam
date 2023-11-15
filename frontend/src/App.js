@@ -99,7 +99,7 @@ function App() {
                 <tr key={user._id}>
                   {
                     Object.keys(user).map(key => (
-                      (key === "dateStarted" || key === 'createdAT' || key === 'updatedAt') ? (
+                      (key === "dateStarted" || key === 'createdAt' || key === 'updatedAt') ? (
                         <td key={user._id + key} className="body-data">
                           {formatDate(user[key])}
                         </td>)
@@ -112,7 +112,7 @@ function App() {
                   }
                   <td>
                     <Edit user={user} render={render} setRender={setRender} formatDate={formatDate}>Edit</Edit>
-                    <Delete _id={user._id}>Delete</Delete>
+                    <Delete _id={user._id} render={render} setRender={setRender}>Delete</Delete>
                   </td>
                 </tr>
               ))

@@ -90,8 +90,8 @@ export default function Edit(props) {
                             <Form.Control type="number" placeholder="$" onChange={handleInputChange} value={data.salary} name="salary" />
                         </Form.Group>
                         <Form.Group className="mb-1" >
-                            <Form.Label>Manager id</Form.Label>
-                            <Form.Control type="text" placeholder="id" onChange={handleInputChange} value={data.manager} name="manager" />
+                            <Form.Label>Manager name (first and last)</Form.Label>
+                            <Form.Control type="text" placeholder="name" onChange={handleInputChange} value={data.manager} name="manager" />
                         </Form.Group>
                         <Form.Group className="mb-1" >
                             <Form.Label>Role</Form.Label>

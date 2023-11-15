@@ -14,6 +14,7 @@ export default function Delete(props) {
             await Network.delete(`/delete?_id=${props._id}`);
             window.alert("deleted");
             handleClose();
+            props.setRender(props.render + 1);
         } catch (error) {
             window.alert("could not delete");
         }

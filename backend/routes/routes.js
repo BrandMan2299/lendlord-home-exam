@@ -5,17 +5,28 @@ const User = require('../models/users');
 
 router.post('/create', async (ctx) => {
     const user = new User(ctx.request.body);
-    if (user.role != 'Manager') {
+    if (user.role !== 'Manager') {
         try {
-            await User.findById(user.manager);
-            await user.save();
-            ctx.body = `hello ${user.firstName} ${user.lastName}, welcome aboard!`;
+            const [firstName, lastName] = user.manager.split(' ');
+            const manager = await User.findOne({ firstName: firstName, lastName: lastName });
+            if (manager) {
+                await user.save();
+                ctx.body = `hello ${user.firstName} ${user.lastName}, welcome aboard!`;
+            }
+            else {
+                ctx.error = "wrong manager name..."
+            }
         } catch (error) {
-            ctx.error = "wrong manager Id..."
+            ctx.error = "wrong manager namne..."
         }
     } else {
-        await user.save();
-        ctx.body = `Hello ${user.firstName} ${user.lastName}, welcome aboard!`;
+        if (user.manager === "Abner Dast") {
+            await user.save();
+            ctx.body = `Hello ${user.firstName} ${user.lastName}, welcome aboard!`;
+        }
+        else {
+            ctx.error = "wrong manager name..."
+        }
     }
 });
 
@@ -48,9 +59,29 @@ router.get('/getUserById/:id', async (ctx) => {
 router.post('/update', async (ctx) => {
     const data = ctx.request.body;
     const query = ctx.query;
-    await User.findOneAndUpdate(query, data);
-    const user = await User.findOne(data);
-    ctx.body = user;
+    if (data.role !== 'Manager') {
+        try {
+            const [firstName, lastName] = data.manager.split(' ');
+            const manager = await User.findOne({ firstName: firstName, lastName: lastName });
+            if (manager) {
+                await User.findOneAndUpdate(query, data);
+                const user = await User.findOne(data);
+                ctx.body = user;
+            } else {
+                ctx.error = "wrong manager name..."
+            }
+        } catch (error) {
+            ctx.error = "Somthing went wrong";
+        }
+    } else {
+        if (data.manager === "Abner Dast" || data.firstName + data.lastName === "AbnerDast") {
+            await User.findOneAndUpdate(query, data);
+            const user = await User.findOne(data);
+            ctx.body = user;
+        } else {
+            ctx.error = "wrong manager name..."
+        }
+    }
 
 })
 
