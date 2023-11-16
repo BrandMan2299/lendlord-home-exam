@@ -41,7 +41,6 @@ function PopUp(props) {
                 manager: data.manager,
                 role: data.role,
                 salary: data.salary
-
             };
             console.log(user);
             const messege = await Network.post('/create', user);
@@ -94,6 +93,7 @@ function PopUp(props) {
                         <Form.Group className="mb-1" >
                             <Form.Label>Role</Form.Label>
                             <Form.Select onChange={handleInputChange} value={data.role} name="role">
+                                <option hidden> Choose a role</option>
                                 <option value="Manager">Manager</option>
                                 <option value="Worker">Worker</option>
                                 <option value="Driver">Driver</option>
