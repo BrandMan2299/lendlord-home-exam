@@ -54,30 +54,33 @@ function App() {
         console.log(error);
       }
     })();
-  }, [render, sortKey, sortDir])
+  }, [render, sortKey, sortDir, search])
   return (
     users ?
       <div className="App">
         <header className="App-header">
-          <img src={logo} width={'200px'} alt={'logo'} />
+          <img src={logo} width={'300px'} alt={'logo'} />
         </header>
-        <PopUp render={render} setRender={setRender} />
-        <InputGroup>
-          <SplitButton
-            variant="outline-secondary"
-            title="Search"
-            id="input-group-dropdown-1"
-            onSelect={searchKey}
-            onClick={submit}
-          >
-            <Dropdown.Item eventKey='firstName'> First Name</Dropdown.Item>
-            <Dropdown.Item eventKey='lastName'> Last Name</Dropdown.Item>
-            <Dropdown.Item eventKey='email'> Email</Dropdown.Item>
-            <Dropdown.Item eventKey='role'> Role </Dropdown.Item>
-            <Dropdown.Item eventKey='_id'> Id </Dropdown.Item>
-          </SplitButton>
-          <Form.Control aria-label="Text input with dropdown button" onChange={searchValue} />
-        </InputGroup>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <PopUp render={render} setRender={setRender} />
+          <InputGroup style={{ width: '400px' }}>
+            <SplitButton
+              variant="outline-secondary"
+              title="Search"
+              id="input-group-dropdown-1"
+              onSelect={searchKey}
+              onClick={submit}
+            >
+              <Dropdown.Item eventKey='firstName'> First Name</Dropdown.Item>
+              <Dropdown.Item eventKey='lastName'> Last Name</Dropdown.Item>
+              <Dropdown.Item eventKey='email'> Email</Dropdown.Item>
+              <Dropdown.Item eventKey='role'> Role </Dropdown.Item>
+              <Dropdown.Item eventKey='_id'> Id </Dropdown.Item>
+            </SplitButton>
+            <Form.Control aria-label="Text input with dropdown button" onChange={searchValue} />
+          </InputGroup>
+          <div></div>
+        </div>
         <div>
           <Table striped bordered hover>
             <thead className='table-light'>
@@ -120,7 +123,7 @@ function App() {
             </tbody>
           </Table>
         </div>
-      </div>
+      </div >
       : !loading ?
         <div>loading</div>
         :
